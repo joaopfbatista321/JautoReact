@@ -1,17 +1,20 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import HomePage from './pages/HomePage'; // Verifique se o caminho está correto
+import ProprietariosPage from './pages/ProprietariosPage'; // Import the ProprietariosPage component
 
 function App() {
   return (
     <Router>
-      <Switch>
-        <Route path="/login" component={LoginPage} />
-        <Route path="/register" component={RegisterPage} />
-        <Route path="/" component={HomePage} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/proprietarios" element={<ProprietariosPage />} /> // Define the route for ProprietariosPage
+        <Route path="/login/register" element={<RegisterPage />} />
+      </Routes>
     </Router>
   );
 }

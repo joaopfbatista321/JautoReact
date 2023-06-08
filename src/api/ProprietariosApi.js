@@ -1,7 +1,9 @@
+
+
 class ProprietariosApi {
     static async getProprietarios() {
       try {
-        const response = await fetch('https://sua-api-de-proprietarios.com/api/proprietarios');
+        const response = await fetch('/api/proprietariosapi');
         const data = await response.json();
         return data;
       } catch (error) {
