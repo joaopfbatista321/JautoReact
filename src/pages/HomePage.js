@@ -33,6 +33,11 @@ function HomePage() {
         </Link>
       </li>
       <li className="nav-item">
+        <Link to="/carros" className="nav-link">
+          <button className="btn btn-primary">Carros</button>
+        </Link>
+      </li>
+      <li className="nav-item">
         <Link to="/login" className="nav-link">
           <button className="btn btn-primary">Login</button>
         </Link>
