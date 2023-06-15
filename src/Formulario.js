@@ -47,6 +47,22 @@ class Formulario extends React.Component {
         this.setState({ proprietarioCarroFK: evento.target.value });
     }
 
+    handleFormUpdate = (evento) => {
+        evento.preventDefault();
+    
+        let dadosForm = {
+            id: this.state.idCarro,  // Será necessário adicionar uma entrada no estado para o id do carro.
+            marca: this.state.marcaCarro,
+            tipo: this.state.tipoCarro,
+            cor: this.state.corCarro,
+            modelo: this.state.modeloCarro,
+            fotografia: this.state.fotografiaCarro,
+            proprietario: this.state.proprietarioCarroFK,
+        }
+    
+        this.props.atualizaCarroOUT(dadosForm);
+    }
+
     handleFormSubmit = (evento) => {
         evento.preventDefault();
 
@@ -113,6 +129,8 @@ class Formulario extends React.Component {
                 </div>
                 <input type="submit" value="Adicionar carro" className="btn btn-outline-primary" />
             </form>
+
+            
         )
     }
 }

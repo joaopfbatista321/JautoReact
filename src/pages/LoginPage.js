@@ -204,47 +204,66 @@ export default LoginPage;
  */
 import React, { useState } from 'react';
 import AccountApi from '../api/AccountApi';
+import { useNavigate } from 'react-router-dom';
 
 
 function LoginPage() {
-  const [userName, setUserName] = useState('');
+  const [Email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+ 
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await AccountApi.login(userName, password);
-      console.log(response); // Handle response accordingly
+      const response = await AccountApi.login(Email, password);
+      console.log(response); 
+
+      // Handle response accordingly
+      if (response.success) {
+        navigate('./CarroPage');
+        
+      } else {
+        // Handle login failure (show error message, etc.)
+      }
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={userName}
-            onChange={e => setUserName(e.target.value)}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-      {error && <p>Error: {error}</p>}
-    </div>
+    
+    <div className="container">
+    <h2>Login</h2>
+    <form onSubmit={handleLogin} className="mt-3">
+      <div className="mb-3">
+        <label for="email" className="form-label">Email:</label>
+        <input
+          type="email"
+          id="email"
+          className="form-control"
+          value={Email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <div className="mb-3">
+        <label for="password" className="form-label">Password:</label>
+        <input
+          type="password"
+          id="password"
+          className="form-control"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <button type="submit" className="btn btn-primary">Login</button>
+      </div>
+    </form>
+  </div>
   );
 }
 

@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProprietariosPage from './pages/ProprietariosPage'; // Import the ProprietariosPage component
 import CarroPage from './pages/CarroPage';
+import EditaCarroFormulario from "./EditaCarroFormulario";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/carros" element={<CarroPage />} />
         <Route path="/proprietarios" element={<ProprietariosPage />} /> // Define the route for ProprietariosPage
         <Route path="/login/register" element={<RegisterPage />} />
+        <Route path="/editarCarro/:id" element={<EditaCarroFormulario />} />  
       </Routes>
     </Router>
   );

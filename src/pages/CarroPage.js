@@ -39,6 +39,25 @@ async function InsereCarro(carro) {
   }
 }
 
+async function AtualizaCarro(idCarro, carro) {
+  let formData = new FormData();
+  formData.append("Id", idCarro);
+  formData.append("Marca", carro.Marca);
+  formData.append("Tipo", carro.Tipo);
+  formData.append("Cor", carro.Cor);
+  formData.append("Modelo", carro.Modelo);
+  //formData.append("uploadFotoCarro", carro.Fotografia);
+  formData.append("Proprietario", carro.Proprietario);
+  let resposta = await fetch("api/carrosapi/" + idCarro, {
+    method: "PUT",
+    body: formData
+  });
+  if (!resposta.ok) {
+    console.error(resposta);
+    throw new Error("Ocorreu um erro na atualização dos dados do Carro", resposta.status)
+  }
+}
+
 async function ApagaCarro(idCarro) {
   let formData = new FormData();
   formData.append("id", idCarro);
@@ -87,6 +106,15 @@ class App extends React.Component {
       this.LoadCarros();
     } catch (error) {
       console.error("Ocorreu um erro com a adição do carro (" + carro.Marca + ")");
+    }
+  }
+
+  handleAtualizaCarro = async (idCarro, carro) => {
+    try {
+      await AtualizaCarro(idCarro, carro);
+      this.LoadCarros();
+    } catch (error) {
+      console.error("Ocorreu um erro com a atualização do carro.");
     }
   }
 

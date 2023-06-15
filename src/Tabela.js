@@ -3,6 +3,7 @@
  */
 
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Cabecalho() {
     return (
@@ -36,6 +37,11 @@ const Corpo = (props) => {
                         title={carro.nome}
                         height="50000"
                     />
+                </td>
+                <td>
+                    <Link to={`/editarCarro/${carro.id}`}>
+                        <button className="btn btn-outline-secondary">Editar</button>
+                    </Link>
                 </td>
                 <td>
                     <button
