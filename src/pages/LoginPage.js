@@ -218,11 +218,10 @@ function LoginPage() {
     event.preventDefault();
     try {
       const response = await AccountApi.login(Email, password);
-      console.log(response); 
 
       // Handle response accordingly
-      if (response.success) {
-        navigate('./CarroPage');
+      if (response === 200) {
+        window.location = "/carros"
         
       } else {
         // Handle login failure (show error message, etc.)

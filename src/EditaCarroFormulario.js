@@ -1,100 +1,109 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
-class EditaCarroFormulario extends React.Component {
-  state = {
-    carro: null
-  };
-  
+const EscolheProprietario = (props) => {
+  const opcoes = props.dadosProprietariosIN.map((item) => {
+    return (<option key={item.id} value={item.id}>{item.nome}</option>)
+  });
+  return (
+    <select required
+      className="form-select"
+      onChange={props.proprietarioEscolhidoOUT}>
+      <option value="">Selecione, por favor, um proprietário</option>
+      {opcoes}
+    </select>
+  )
+};
 
-  componentDidMount() {
-    const id = this.props.match.params.id;
-    // carrega os dados do carro pelo ID
-  }
+const EditaCarroFormulario = () => {
+  const [carro, setCarro] = useState(null);
+  const [proprietarios, setProprietarios] = useState(null);
 
-  handleSubmit = async event => {
+  useEffect(() => { 
+   
+    fetch(`/api/Carrosapi/23`)
+      .then(res => res.json())
+      .then(data => setCarro(data));
+
+    fetch(`/api/Proprietariosapi/`)  // replace with your actual endpoint
+      .then(res => res.json())
+      .then(data => setProprietarios(data));
+
+  }, []);
+
+  const handleSubmit = async event => {
     event.preventDefault();
-    // atualiza o carro
+    fetch(`/api/Carrosapi/${carro.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(carro)
+    }).then(res => {
+      if (res.ok) {
+        // Update was successful, handle accordingly
+      } else {
+        // Update failed, handle error
+      }
+    });
   };
 
-  handleChange = event => {
-    // atualiza o estado do carro
+  const handleChange = event => {
+    setCarro({ ...carro, [event.target.name]: event.target.value });
   };
 
-  render() {
-    const { carro } = this.state;
+  const handleProprietarioChange = event => {
+    const proprietarioId = event.target.value;
+    setCarro({ ...carro, proprietarioFK: proprietarioId });
+  };
 
-    if (!carro) {
-      return <div>Carregando...</div>;
-    }
-
-    const { marcaCarro, tipoCarro, corCarro, modeloCarro } = this.state;
-        const { proprietariosIN } = this.props;
-
-        const EscolheProprietario = (props) => {
-            const opcoes = props.dadosProprietariosIN.map((item) => {
-                return (<option value={item.id}>{item.nome}</option>)
-            })
-            return (
-                <select required
-                    className="form-select"
-                    onChange={props.proprietarioEscolhidoOUT}>
-                    <option value="">Selecione, por favor, um proprietário</option>
-                    {opcoes}
-                </select>
-            )
-        }
-    return (
-
-        
-      <form onSubmit={this.handleSubmit}>
-       method="Post"
-                onSubmit={this.handleFormSubmit}>
-                <div className="row">
-                    <div className="col-md-4">
-                        Marca: <input type="text"
-                            required
-                            className="form-control"
-                            name="marcaCarro"
-                            value={marcaCarro}
-                            onChange={this.handleAdicao} /><br />
-                        Tipo: <input type="text"
-                            required
-                            className="form-control"
-                            name="tipoCarro"
-                            value={tipoCarro}
-                            onChange={this.handleAdicao} />
-                    </div>
-                    <div className="col-md-4">
-                        Cor: <input type="text"
-                            required
-                            className="form-control"
-                            name="corCarro"
-                            value={corCarro}
-                            onChange={this.handleAdicao} /><br />
-                        Modelo: <input type="text"
-                           required
-                            className="form-control"
-                            name="modeloCarro"
-                            value={modeloCarro}
-                            onChange={this.handleAdicao} />
-                    </div>
-                    <div className="col-md-4">
-                        Fotografia: <input type="file"
-                            
-                            name="fotografiaCarro"
-                            accept=".jpg,.png"
-                            className="form-control"
-                            onChange={this.handleFotoCarro} /><br />
-                        Proprietário: <EscolheProprietario dadosProprietariosIN={proprietariosIN}
-                            proprietarioEscolhidoOUT={this.handleProprietarioChange} />
-                        <br />
-                    </div>
-                </div>
-        <button type="submit">Salvar</button>
-      </form>
-    );
+  if (!carro || !proprietarios) {
+    return <div>Carregando...</div>;
   }
+
+  const { marca, tipo, cor, modelo } = carro;
+
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="row">
+        <div className="col-md-4">
+          Marca: <input type="text"
+              required
+              className="form-control"
+              name="marca"
+              value={marca}
+              onChange={handleChange} /><br />
+          Tipo: <input type="text"
+              required
+              className="form-control"
+              name="tipo"
+              value={tipo}
+              onChange={handleChange} />
+        </div>
+        <div className="col-md-4">
+          Cor: <input type="text"
+              required
+              className="form-control"
+              name="cor"
+              value={cor}
+              onChange={handleChange} /><br />
+          Modelo: <input type="text"
+             required
+              className="form-control"
+              name="modelo"
+              value={modelo}
+              onChange={handleChange} />
+        </div>
+        <div className="col-md-4">
+          Proprietário: 
+          <EscolheProprietario dadosProprietariosIN={proprietarios} 
+                               proprietarioEscolhidoOUT={handleProprietarioChange} />
+          <br />
+        </div>
+      </div>
+      <button type="submit">Salvar</button>
+    </form>
+  );
 }
 
 export default EditaCarroFormulario;

@@ -5,6 +5,7 @@ import Formulario from '../Formulario';
 
 async function getCarros() {
   let dados = await fetch("api/CarrosApi/");
+  console.log('sim',dados)
   if (!dados.ok) {
     console.error(dados)
     throw new Error("Não foi possível aceder à API e ler os dados dos Carros. Código: ", dados.status)
@@ -86,6 +87,7 @@ class App extends React.Component {
     try {
       let dadosDosCarros = await getCarros();
       this.setState({ carros: dadosDosCarros });
+      console.log(dadosDosCarros)
     } catch (erro) {
       console.error("Aconteceu um erro no acesso aos dados dos carros. ", erro)
     }

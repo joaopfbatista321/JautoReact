@@ -32,7 +32,7 @@ const Corpo = (props) => {
                 <td>{carro.proprietario}</td>
                 <td>
                     <img
-                        src={'Carros/' + carro.fotografia}
+                        src={'Carros/'+carro.fotografias[0].nomeFicheiro}
                         alt={'foto do ' + carro.nome}
                         title={carro.nome}
                         height="50000"

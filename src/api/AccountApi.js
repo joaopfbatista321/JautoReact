@@ -11,8 +11,7 @@ const AccountApi = {
         password
       });
      
-
-      return response.data;
+      return response.status;
     } catch (error) {
       //trocar isto
       console.error('Error logging in:', error);
